@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template
 import cgi
+import re
 
 
 app = Flask(__name__)
@@ -22,10 +23,17 @@ def validation():
     password = str(password)
     repeated = str(repeated)
     email = str(email)
+    email_regex = re.compile(r"[^@\s]+@[^@\s]+\.[a-zA-Z0-9]+$")
 
     if name.isalnum() and password == repeated and len(email) <= 20:
+        if not email_regex.match(email): 
+            mail_error = "This is not a valid E-mail!"
+            return render_template("base.html", your_name=name, your_email=email, email_error=mail_error)
+        if email_regex.match(email):
+            return render_template("sucess.html", your_name=name)
+         
         
-        return render_template("sucess.html", your_name=name)
+        
     if name.isalnum() and password == repeated and len(email) > 20:
         mail_error = "This is not a valid E-mail!"
         return render_template("base.html", your_name=name, your_email=email, email_error=mail_error)
