@@ -31,18 +31,19 @@ def validation():
     if len(name) > 20:
         name_error = "The username is too long"
         return render_template("base.html", your_name=name, your_email=email, name_error=name_error)
+    if name.isalnum() and password == repeated and len(email) > 20:
+        mail_error = "E-Mail is too long!"
+        return render_template("base.html", your_name=name, your_email=email, email_error=mail_error)
+    if name.isalnum() and password == repeated and len(email) < 3:
+        mail_error = "E-mail is too short!"
+        return render_template("base.html", your_name=name, your_email=email, email_error=mail_error)     
     if name.isalnum() and password == repeated and len(email) :
         if not email_regex.match(email): 
             mail_error = "This is not a valid E-mail!"
             return render_template("base.html", your_name=name, your_email=email, email_error=mail_error)
         if email_regex.match(email):
             return render_template("sucess.html", your_name=name)
-         
-        
-        
-    if name.isalnum() and password == repeated and len(email) > 20:
-        mail_error = "This is not a valid E-mail!"
-        return render_template("base.html", your_name=name, your_email=email, email_error=mail_error)
+            
     if name.isalnum() and password != repeated:
         password_error = "The passwords are invalid"
         return render_template("base.html", your_name=name, your_email=email, password_error=password_error)
