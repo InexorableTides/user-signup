@@ -25,7 +25,13 @@ def validation():
     email = str(email)
     email_regex = re.compile(r"[^@\s]+@[^@\s]+\.[a-zA-Z0-9]+$")
 
-    if name.isalnum() and password == repeated and len(email) <= 20:
+    if len(name) < 3:
+        name_error = "The username is too short"
+        return render_template("base.html", your_name=name, your_email=email, name_error=name_error)
+    if len(name) > 20:
+        name_error = "The username is too long"
+        return render_template("base.html", your_name=name, your_email=email, name_error=name_error)
+    if name.isalnum() and password == repeated and len(email) :
         if not email_regex.match(email): 
             mail_error = "This is not a valid E-mail!"
             return render_template("base.html", your_name=name, your_email=email, email_error=mail_error)
